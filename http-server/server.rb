@@ -29,16 +29,28 @@ loop do
 
   STDERR.puts request_line
 
-  response = "We're Live!\n"
+  path = requested_file(request_line)
 
-  socket.print "HTTP/1.1 200 OK\r\n" +
-               "Content-Type: text/plain\r\n" +
-               "Content-Length: #{response.bytesize}\r\n" +
-               "Connection: close\r\n"
+  if File.exist?(path) && !File.directory?(path)
+    File.open(path, "rb") do |file|
+      socket.print "HTTP/1.1 200 OK\r\n" +
+                   "Content-Type: #{content_type(file)}\r\n" +
+                   "Content-Length: #{file.size}\r\n" +
+                   "Connection: close\r\n"
 
-  socket.print "\r\n"
+      socket.print "\r\n"
 
-  socket.print response
+      IO.copy_stream(file, socket)
+    end
+  else
+    message = "File not found\n"
+
+    socket.print "HTTP/1.1 404 Not Found\r\n" +
+                 "Content-Type: text/plain\r\n" +
+                 "Content-Length: #{message.size}\r\n" +
+                 "Connection: close\r\n"
+    socket.print "\r\n"
+  end
 
   socket.close
 end
