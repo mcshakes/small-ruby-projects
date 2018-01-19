@@ -18,7 +18,10 @@ def content_type(path)
 end
 
 def requested_file(request_line)
+  request_uri     = requested_line.split(" ")[1]
+  path            = URI.unescape(URI(request_uri).path)
 
+  File.join(WEB_ROOT, path)
 end
 
 server = TCPServer.new("localhost", 2345)
