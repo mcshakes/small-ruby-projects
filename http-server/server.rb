@@ -1,5 +1,6 @@
 require "socket"
 require "uri"
+require "pry"
 
 WEB_ROOT = "./public"
 
@@ -39,7 +40,7 @@ server = TCPServer.new("localhost", 2345)
 loop do
   socket = server.accept
   request = socket.gets
-
+binding.pry
   STDERR.puts request_line
 
   path = requested_file(request_line)
