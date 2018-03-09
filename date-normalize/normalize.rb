@@ -1,6 +1,10 @@
+
 def change_it(arr)
   normalize(arr)
   date_dealer(arr)
+  numberize_months(arr)
+
+
 end
 
 DATE = {
@@ -40,8 +44,22 @@ def date_dealer(arr)
   final.map do |date|
     date.join("-")
   end
+end
 
+def numberize_months(arr)
+  final = []
+  arr.each do |date|
+    date = date.split("-")
+    months = DATE.keys.each {|month| month.to_s}
+    similarity = date & months
+    final << similarity
+  end
+
+  string_month = final.flatten[0]
+
+  DATE[string_month]
 end
 
 arr = ["12-10-2004", "May 9,1989", "12/4/10"]
 p change_it(arr)
+  
