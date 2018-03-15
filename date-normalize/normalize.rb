@@ -1,3 +1,4 @@
+require "pry"
 
 def change_it(arr)
   normalize(arr)
@@ -11,16 +12,8 @@ def change_it(arr)
 
   arr.each do |date|
     date_keys = DATE.keys.map(&:to_s)
-
-    if date_keys.any? {|month| date.include? month}
-      date.split("-").map do |elem|
-        if elem == month
-          date.sub! elem, DATE[(month).to_sym]
-        end
-      end
-    else
-      date
-    end
+    # date.sub! elem, DATE[(month).to_sym]
+    # date_keys.any? {|month| date.include? month}
   end
 end
 
@@ -82,4 +75,3 @@ end
 
 arr = ["12-10-2004", "May 9,1989", "12/4/10"]
 p change_it(arr)
-  
