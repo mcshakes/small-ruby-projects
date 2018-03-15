@@ -2,9 +2,26 @@
 def change_it(arr)
   normalize(arr)
   date_dealer(arr)
-  numberize_months(arr)
+  # ["12-10-2004", "May-09-1989", "12-04-2010"]
 
+  # check that it has it first
 
+  # numberize_months(arr)
+  # iterate through array
+
+  arr.each do |date|
+    date_keys = DATE.keys.map(&:to_s)
+
+    if date_keys.any? {|month| date.include? month}
+      date.split("-").map do |elem|
+        if elem == month
+          date.sub! elem, DATE[(month).to_sym]
+        end
+      end
+    else
+      date
+    end
+  end
 end
 
 DATE = {
@@ -46,19 +63,22 @@ def date_dealer(arr)
   end
 end
 
-def numberize_months(arr)
-  final = []
-  arr.each do |date|
-    date = date.split("-")
-    months = DATE.keys.each {|month| month.to_s}
-    similarity = date & months
-    final << similarity
-  end
+# def numberize_months(arr)
+#   final = []
+#   arr.each do |date|
+#     date = date.split("-")
+#     months = DATE.keys.each {|month| month.to_s}
+#     similarity = date & months
+#     final << similarity
+#   end
 
-  string_month = final.flatten[0]
+#   string_month = final.flatten[0]
 
-  DATE[string_month]
-end
+#   digit = DATE[string_month]
+
+#   # use DATE.key(digit.to_i) to make the match
+# DATE.keys.map(&:to_s)
+# end
 
 arr = ["12-10-2004", "May 9,1989", "12/4/10"]
 p change_it(arr)
